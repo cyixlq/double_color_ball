@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>双色球选号助手</title>
+    <style>
+        .title {
+            width: 130px;
+            height: 30px;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: large;
+            font-weight: bold;
+        }
+        .size {
+            width: 150px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .center {
+            display: flex;
+            justify-content: center;
+        }
+        .button {
+            width: 160px;
+            height: 50px;
+            background-color: #3399ff;
+            color: white;
+            border-width: 0px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #result {
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+            border-width: 1px;
+            border: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">双色球选号助手</div>
+    <div class="size">
+        要自动生成的注数：<br/>
+        <input id="count" class="size" type="number" placeholder="请输入要自动生成的注数" value="5"/>
+    </div>
+    <div class="center">
+        <input class="button" type="button" value="生成" onclick="genAllNumber()"/>
+    </div>
+    <div id="result"></div>
+</body>
+<script type="text/javascript">
+    function genAllNumber() {
+        let size = document.getElementById('count').value * 1;
+        let map = new Array();
+        for (var i = 0; i < size; i++) {
+            map[i] = new Array();
+            for (var red = 0; red < 6; red++) {
+                map[i].push(genRedBallNumber(map[i]))
+            }
+            map[i].push(genBlueBallNumber())
+        }
+        let result = "自助生成结果：<br/>";
+        for (var i = 0; i < map.length; i++) {
+            let arr = map[i];
+            result += "第" + i + "注："
+            for (var j = 0; j < arr.length; j++) {
+                if (j == arr.length - 1) {
+                    result += "<font color='blue'>" + arr[j] + "</font>&nbsp;";
+                    result += "<br/>";
+                } else {
+                    result += "<font color='red'>" + arr[j] + "</font>&nbsp;";
+                }
+            }
+        }
+        document.getElementById('result').innerHTML = result;
+    }
+
+    function genRedBallNumber(arr) {
+        let result = genRandom(33, 1);
+        let find = arr.indexOf(result);
+        while(find !== -1) {
+            result = genRandom(33, 1);
+            find = arr.indexOf(result);
+        }
+        return result;
+    }
+
+    function genBlueBallNumber() {
+        return genRandom(16, 1);
+    }
+
+    function genRandom(end, start) {
+        return Math.floor(Math.random() * end + start)
+    }
+</script>
+</html>
